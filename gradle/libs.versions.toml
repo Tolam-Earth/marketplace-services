@@ -1,0 +1,22 @@
+[versions]
+hedera-sdk="2.16.3"
+grpc-netty="1.44.0"
+commons-math="3.6.1"
+guava="30.1.1-jre"
+junit="5.8.2"
+flogger="0.7.4"
+testcontainers="1.17.2"
+spock="2.2-groovy-3.0"
+
+[libraries]
+hedera-sdk = { module = "com.hedera.hashgraph:sdk-full", version.ref = "hedera-sdk" }
+grpc-netty = { module = "io.grpc:grpc-netty", version.ref = "grpc-netty" }
+commons-math = { module = "org.apache.commons:commons-math3", version.ref = "commons-math" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+flogger = { module = "com.google.flogger:flogger", version.ref = "flogger"}
+flogger-backend = { module = "com.google.flogger:flogger-system-backend", version.ref = "flogger"}
+testcontainers = {module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-junit = {module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+spock = {module = "org.spockframework:spock-core", version.ref = "spock"}

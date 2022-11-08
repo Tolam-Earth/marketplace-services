@@ -1,0 +1,65 @@
+apply plugin: "io.micronaut.test-resources";
+
+dependencies {
+  annotationProcessor mn.micronaut.http.validation
+  annotationProcessor mn.micronaut.data.processor
+
+  implementation(project(":common"))
+  implementation mn.micronaut.inject.java
+  implementation mn.micronaut.http.client
+  implementation mn.jackson.databind
+  implementation mn.micronaut.runtime
+  implementation mn.micronaut.data.jdbc
+  implementation mn.micronaut.jdbc.hikari
+  implementation mn.jakarta.annotation.api
+  implementation mn.micronaut.validation
+  implementation mn.micronaut.flyway
+  implementation mn.micronaut.gcp.pubsub
+  implementation libs.grpc.netty
+  implementation libs.hedera.sdk
+  implementation("com.google.protobuf:protobuf-java:3.21.5")
+
+//  implementation hem.message.schemas
+  implementation files("$projectDir/lib/message-schemas-1.0.0-SNAPSHOT.jar")
+
+  runtimeOnly mn.h2
+  runtimeOnly("ch.qos.logback:logback-classic")
+
+  testImplementation(project(":common-test"))
+  testImplementation("ch.qos.logback:logback-classic")
+}
+
+compileGroovy.enabled = false;
+
+micronaut {
+  testResources {
+    version = "1.1.2"
+  }
+}
+
+integrationTest {
+  def prop = System.getenv("micronaut.environments")
+  systemProperty("micronaut.environments", prop ? "$prop,integration" : "integration")
+   def configPath = rootProject.projectDir.absolutePath + "/local-integration.yml"
+  systemProperty("micronaut.config.files", configPath)
+  doFirst {
+    def config = file(configPath)
+    if (!config.exists()) {
+      config.createNewFile()
+    }
+  }
+}
+
+run {
+  def prop = System.getenv("micronaut.environments")
+  systemProperty("micronaut.environments", prop ? "$prop,dev" : "dev")
+  def configPath = rootProject.projectDir.absolutePath + "/local.yml"
+  systemProperty("micronaut.config.files", configPath)
+  doFirst {
+    def config = file(configPath)
+    if (!config.exists()) {
+      config.createNewFile()
+    }
+  }
+}
+

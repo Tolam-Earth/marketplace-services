@@ -1,0 +1,6 @@
+dependencies {
+  implementation mn.micronaut.http.server
+  implementation mn.jackson.databind
+  implementation libs.hedera.sdk
+}
+compileGroovy.enabled = false

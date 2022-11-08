@@ -1,0 +1,40 @@
+/*
+ * Copyright 2022 Tolam Earth
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+-- DROP TABLE IF EXISTS ListedOffsets;
+
+CREATE TABLE ListedOffsets
+(
+    id                     bigint generated always as identity primary key,
+    token_id               varchar not null,
+    serial_number          bigint  not null,
+    account_id             varchar not null,
+    txn_id                 varchar not null,
+    retail_price           bigint,
+    retail_price_timestamp bigint,
+    purchase_txn_id        varchar
+);
+
+-- DROP TABLE IF EXISTS ListedTransactions;
+
+CREATE TABLE ListedTransactions
+(
+    id                        bigint generated always as identity primary key,
+    transaction_id            varchar   not null,
+    listing_transaction_state varchar   not null,
+    creation_time             bigint not null,
+    last_update_time          bigint not null
+);

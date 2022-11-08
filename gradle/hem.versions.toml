@@ -1,0 +1,5 @@
+[versions]
+message-schemas="1.0.0-SNAPSHOT"
+
+[libraries]
+message-schemas = {module = "com.tolamearth.integration:message-schemas", version.ref = "message-schemas"}

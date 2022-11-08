@@ -1,0 +1,11 @@
+hem:
+  hedera:
+    network: mainnet
+
+micronaut:
+  http:
+    services:
+      mirror-node:
+        url: https://mainnet.mirror.lworks.io
+      esg:
+        url: https://mainnet.esg.api.lworks.io

@@ -1,0 +1,102 @@
+subprojects {
+  buildscript {
+    dependencies {
+      // enables code completion for version catalog
+      classpath files(mn.class.superclass.protectionDomain.codeSource.location)
+      classpath files(libs.class.superclass.protectionDomain.codeSource.location)
+      classpath files(hem.class.superclass.protectionDomain.codeSource.location)
+    }
+  }
+
+//  apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
+  apply plugin: 'hem-services'
+
+  group = project.group
+  version = project.version
+
+  if (project.pluginManager.hasPlugin("hem-services-endpoint")) {
+    application {
+      def mainClassName = "${project.name.split("-").collect { it.capitalize() }.join("")}Init"
+      mainClass.set("com.tolamearth.marketplace.$mainClassName")
+    }
+  }
+
+  repositories {
+    mavenCentral()
+//    maven {
+//      url "artifactregistry://us-central1-maven.pkg.dev/armm-sandbox/oci-maven"
+//    }
+  }
+
+  dependencies {
+    implementation platform("io.micronaut:micronaut-bom")
+    annotationProcessor platform("io.micronaut:micronaut-bom")
+
+
+    /* Recommended dependency choices:
+     *
+     * annotationProcessor mn.micronaut.data.processor
+     * annotationProcessor mn.micronaut.http.validation
+     * annotationProcessor mn.micronaut.openapi
+     * annotationProcessor mn.micronaut.security.annotations
+     * implementation mn.micronaut.http.client
+     * implementation mn.micronaut.http.server
+     * implementation mn.micronaut.jackson.databind
+     * implementation mn.micronaut.management
+     * implementation mn.micronaut.session
+     * implementation mn.micronaut.data.jdbc
+     * implementation mn.micronaut.flyway
+     * implementation mn.micronaut.gcp.tracing
+     * implementation mn.micronaut.jmx
+     * implementation mn.micronaut.microstream.cache
+     * implementation mn.micronaut.problem.json
+     * implementation mn.micronaut.rabbitmq
+     * implementation mn.micronaut.reactor
+     * implementation mn.micronaut.reactor.http.client
+     * implementation mn.micronaut.security.jwt
+     * implementation mn.micronaut.jdbc.hikari
+     * implementation mn.micronaut.views.freemarker
+     * implementation mn.swagger.annotations
+     * implementation mn.jakarta.annotation.api
+     * runtimeOnly mn.h2
+     * testImplementation libs.testcontainers
+     * testImplementation libs.testcontainers.junit
+     * compileOnly mn.graal
+     * implementation mn.micronaut.validation
+     * testImplementation mn.mockito.core
+     */
+  }
+
+  java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+  }
+
+  def test = tasks.named('test') {
+    useJUnitPlatform {
+      excludeTags "integration"
+    }
+  }
+
+  def integrationTest = tasks.register("integrationTest", Test) {
+    group "verification"
+    useJUnitPlatform {
+      includeTags "integration"
+    }
+    shouldRunAfter test
+  }
+
+  tasks.named("check") {
+    dependsOn integrationTest
+  }
+
+  graalvmNative.toolchainDetection = false
+  micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+      incremental(true)
+      annotations("com.tolamearth.marketplace.*")
+    }
+  }
+}

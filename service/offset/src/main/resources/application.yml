@@ -1,0 +1,70 @@
+micronaut:
+  application:
+    name: offsetService
+#  server:
+#    log-handled-exceptions: true
+  http:
+    services:
+      mirror-node:
+        url: https://testnet.mirror.lworks.io
+        read-timeout: 30s
+        path: /api/v1
+      esg:
+        url: https://testnet.esg.api.lworks.io
+        read-timeout: 30s
+        path: /api/v1
+      armm:
+        url: ${hem.armm.url:`http://localhost:8081`}
+        path: /armm/v1
+logger:
+  levels:
+    com.tolamearth.marketplace.offset.job: WARN
+
+hem:
+  api:
+    version: v1
+  listed_txn_created_expire_timeout: ${hem.txn.timeout.listing.created:30}
+  purchased_txn_created_expire_timeout: ${hem.txn.timeout.purchase.created:30}
+  listed_txn_approval_expire_timeout: ${hem.txn.timeout.listing.approved:30}
+  purchased_txn_approval_expire_timeout: ${hem.txn.timeout.purchase.approved:30}
+  hedera:
+    gasAmount: 1_000_000
+    queryPaymentHbar: 2
+
+jackson:
+  mapper:
+    ACCEPT_CASE_INSENSITIVE_ENUMS: true
+  property-naming-strategy: SNAKE_CASE
+  serialization-inclusion: non_absent
+
+
+
+datasources:
+  default:
+    url: jdbc:h2:file:./devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    dialect: H2
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+
+
+test-resources:
+  containers:
+    pubsub-emulator:
+      image-name: thekevjames/gcloud-pubsub-emulator:latest
+      hostnames:
+        - pubsub.host
+      exposed-ports:
+        - pubsub.port: 8681
+      env:
+        - PUBSUB_PROJECT1: hem-integration-services,nft_details,nft_marketplace_state,nft_general_ledger_state,pub_nft_marketplace_state
+pubsub:
+  emulator:
+    host: ${pubsub.host}:${pubsub.port}
+gcp:
+  project-id: hem-integration-services

@@ -1,0 +1,4 @@
+logger:
+  levels:
+    com.tolamearth.marketplace.offset.job: DEBUG
+    com.tolamearth.marketplace: DEBUG

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+projectDir=$(dirname "$0")
+
+rm "${projectDir}/service/offset/devDb.*.db"
+"${projectDir}/gradlew" clean build --info

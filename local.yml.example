@@ -1,0 +1,7 @@
+hem:
+  lworks:
+    api-key: abcdefghijklmnopqrstuvwxyz123456
+  hedera:
+    operator-id: 0.0.123456
+    private-key: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    offsets-contract-id: 0.0.567890

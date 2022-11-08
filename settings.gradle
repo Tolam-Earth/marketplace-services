@@ -1,0 +1,55 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+    versionCatalogs {
+        "hem" {
+            from(files("gradle/hem.versions.toml"))
+        }
+        "mn" {
+            from("io.micronaut:micronaut-bom:$micronautVersion")
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+        classpath "io.micronaut.gradle:micronaut-gradle-plugin:3.6.2"
+        classpath "io.micronaut.gradle:micronaut-test-resources-plugin:3.6.2"
+        classpath "io.micronaut.gradle:micronaut-aot-plugin:3.6.2"
+        classpath "gradle.plugin.org.flywaydb:gradle-plugin-publishing:9.2.0"
+        classpath "gradle.plugin.com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.1.5"
+        classpath "com.h2database:h2:2.1.214"
+    }
+}
+
+rootProject.name = 'hem-services'
+
+file('shared/').eachDir {
+    if (it.directory && new File(it, "build.gradle").exists()) {
+        include ":${it.name}"
+        project(":${it.name}").projectDir = file(it.absolutePath)
+    }
+}
+file('service/').eachDir {
+    if (it.directory && new File(it, "build.gradle").exists()) {
+        include ":${it.name}-service"
+        project(":${it.name}-service").projectDir = file(it.absolutePath)
+    }
+}
