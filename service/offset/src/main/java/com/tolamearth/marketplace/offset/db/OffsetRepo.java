@@ -89,6 +89,9 @@ public class OffsetRepo {
       );
     } else { // no active listing
       var tokenNft = tokenClient.getNft(tokenId, serialNumber);
+      if(tokenNft == null){
+        throw new HemException(HemErrorCode.UNKNOWN_RESOURCE);
+      }
       return new Offset(tokenNft.accountId(),
           new Nft(tokenId, serialNumber),
           null,
@@ -147,9 +150,9 @@ public class OffsetRepo {
     listingTransactionRepo.save(listingTransactionDto);
   }
 
-  public void updateListings(String accountId, String transactionId, List<Nft> nfts) {
+  public void updateListings(String transactionId, List<Nft> nfts) {
     nfts.forEach(nft -> {
-      var listings = listingRepo.findByAccountIdAndTokenIdAndSerialNumber(accountId, nft.tokenId(), nft.serialNumber());
+      var listings = listingRepo.findByTokenIdAndSerialNumber(nft.tokenId(), nft.serialNumber());
       if (listings.size() == 0) {
         throw new HemException(HemErrorCode.UNKNOWN_RESOURCE);
       }

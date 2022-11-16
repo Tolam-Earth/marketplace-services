@@ -56,7 +56,7 @@ flyway:
 test-resources:
   containers:
     pubsub-emulator:
-      image-name: thekevjames/gcloud-pubsub-emulator:latest
+      image-name: thekevjames/gcloud-pubsub-emulator:288dcd38bb
       hostnames:
         - pubsub.host
       exposed-ports:

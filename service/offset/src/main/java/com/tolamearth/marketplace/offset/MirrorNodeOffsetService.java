@@ -142,7 +142,7 @@ public class MirrorNodeOffsetService implements OffsetService {
     if(!accountService.isAccountValid(new HederaAccount(accountId))){
       throw new HemException(HemErrorCode.UNKNOWN_RESOURCE);
     }
-    offsetRepo.updateListings(accountId, transactionId, nfts);// update the listing
+    offsetRepo.updateListings(transactionId, nfts);// update the listing
     transactionService.purchaseList(accountId, transactionId, nfts);// make the purchase
     offsetRepo.updatePurchasedTransactionState(transactionId,
         ListingTransactionState.APPROVED);// store the purchase transaction

@@ -22,3 +22,5 @@ bin/
 */.kotlintest/
 .java_version
 *.local.properties
+local.yml
+local-integration.yml
